@@ -1,0 +1,45 @@
+---
+title: "cx+x_test1"
+author: "王聖義 (Sheng-Yi Wang) sociology4/r02325008"
+date: "2017年2月23日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(dplyr);library(ggplot2); library(reshape2)
+```
+
+
+```{r}
+x <- read.csv("c:/gra/weather-utf8.csv",fileEncoding="UTF-8")
+
+# 讀入csv後，格式即為dataframe
+day1 <- filter(x, 早晚 == "白天")
+day2 <- mutate(day1, 溫度 = paste(高溫, "-", 低溫))
+day3 <- select(day2, 天氣, 溫度)
+
+night1 <- filter(x, 早晚 == "晚上")
+night2 <- mutate(night1, 溫度 = paste(高溫, "-", 低溫))
+night3 <- select(night2, 天氣, 溫度)
+
+out <- data.frame(t(bind_cols(day3, night3)))
+
+colnames(out) <- day1$日期
+rownames(out) <- c("白天天氣","白天溫度","晚上天氣","晚上溫度")
+out
+```
+
+```{r}
+x1 <- mutate(x, 時間=paste(日期,早晚))
+x2 <- select(x1, 時間, 高溫, 低溫)
+x3 <- melt(x2)
+g <- ggplot(x3, aes(x=時間, y=value, group=variable, colour=variable)) + 
+  geom_line() + 
+  labs(x="時間", y="溫度") 
+g
+```
+
