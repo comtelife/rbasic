@@ -73,3 +73,4 @@ g
 ```
 
 ![](test1_files/figure-markdown_github/unnamed-chunk-3-1.png)
+A line I wroite on my local computer
